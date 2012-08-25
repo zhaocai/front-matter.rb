@@ -1,0 +1,8 @@
+.autotest
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/extr_comment
+lib/extr_comment.rb
+test/test_extr_comment.rb
