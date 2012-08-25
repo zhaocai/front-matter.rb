@@ -1,6 +1,6 @@
 = extrComment
 
-* [TODO]( url ) @zhaocai @start(2012-08-24 20:32)
+* https://github.com/zhaocai/extrComment
 
 == DESCRIPTION:
 

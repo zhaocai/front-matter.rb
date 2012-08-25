@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+#
+require "extr_comment"
+require 'optparse'
+require 'awesome_print'
+
+def parse_opt()
+  options = {}
+
+  # optparse definition
+  optparse = OptionParser.new do |opts|
+    opts.on('-t', '--to FOLDER', 'save to FOLDER [required]') do |d|
+      if Dir.exist?(d)
+        options[:to] = File.expand_path(d)
+      else
+        puts "Invalid Option: #{d} should be an existing folder!"
+        puts opts
+        exit
+      end
+    end
+
+    opts.on('-h', '--help', 'Help Message') do
+      puts opts
+      exit
+    end
+  end
+
+  # parse and check mandatory options
+  begin
+    optparse.parse!
+    mandatory = []
+    missing = mandatory.select{ |param| options[param].nil? }
+    if not missing.empty?
+      puts "Missing options: #{missing.join(', ')}"
+      puts optparse
+      exit
+    end
+  rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+    puts $!.to_s
+    puts optparse
+    exit
+  end
+
+  return options
+end
+
+
+
+
+if $0 == __FILE__
+
+  options = parse_opt()
+  ec = ExtrComment.new()
+
+  ARGV.each do |f|
+    if File.readable?(f)
+      content = ec.extract_file(f)
+      ap content
+    else
+      puts "File: #{f} is not readable!"
+    end
+  end
+
+# begin
+#   comments = ec.extract(f)
+# rescue IOError => e
+#   puts "Could not write to file"
+# end
+# comments.each { |k, v|
+#   File.open(options[:to] + '/' + k, "w") do |file|
+#     file.puts v
+#   end
+# }
+end
+
