@@ -47,19 +47,18 @@ end
 
 
 
-if $0 == __FILE__
 
-  options = parse_opt()
-  ec = ExtrComment.new()
+options = parse_opt()
+ec = ExtrComment.new()
 
-  ARGV.each do |f|
-    if File.readable?(f)
-      content = ec.extract_file(f)
-      ap content
-    else
-      puts "File: #{f} is not readable!"
-    end
+ARGV.each do |f|
+  if File.readable?(f)
+    content = ec.extract_file(f)
+    ap content
+  else
+    puts "File: #{f} is not readable!"
   end
+end
 
 # begin
 #   comments = ec.extract(f)
@@ -71,5 +70,4 @@ if $0 == __FILE__
 #     file.puts v
 #   end
 # }
-end
 

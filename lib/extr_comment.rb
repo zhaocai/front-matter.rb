@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
-# --------------- ------------------------------------------------------------
-#       FileName : extr_comment
-#           Desc : extract comment from source code
-#         Author : Zhao Cai <caizhaoff@gmail.com>
-#       HomePage : [TODO]( HomePage )
-#        Version : 0.1
-#   Date Created : Sat 25 Aug 2012 01:36:13 AM EDT
-#  Last Modified : Sat 25 Aug 2012 05:02:21 PM EDT
-#            Tag : [ ruby, comment, extract ]
-#      Copyright : © 2012 by Zhao Cai,
+# =============== ============================================================
+#  FileName      : extr_comment
+#  Desc          : extract comment from source code
+#  Author        : Zhao Cai <caizhaoff@gmail.com>
+#  HomePage      : https://github.com/zhaocai/extr_comment.rb
+#  Version       : 0.1
+#  Date Created  : Sat 25 Aug 2012 01:36:13 AM EDT
+#  Last Modified : Fri 14 Sep 2012 09:05:30 PM EDT
+#  Tag           : [ ruby, comment, extract ]
+#  Copyright     : (c) 2012 by Zhao Cai,
 #                  Released under current GPL license.
-# --------------- ------------------------------------------------------------
+# =============== ============================================================
 
 # [TODO]( align ) @zhaocai @start(2012-08-25 05:54)
 class ExtrComment
-  VERSION = '1.0.0'
+  VERSION = '1.0.1'
   attr_accessor :patterns
   def initialize(patterns={} )
     cmarker   = %r{(?<comment> ^\s* \W{1,2} \s*)}x
@@ -22,9 +22,9 @@ class ExtrComment
       :header => {
         :filetype => %r{.*},
         :cmarker  => cmarker,
-        :start    => %r{#{cmarker} (?<start> -{3,} \s -{3,}$) }x ,
+        :start    => %r{#{cmarker} (?<start> [-=]{3,} \s [-=]{3,}$) }x ,
         :content  => %r{#{cmarker} (?<content> .* $)          }x ,
-        :end      => %r{#{cmarker} (?<end> -{3,} \s -{3,}$)   }x ,
+        :end      => %r{#{cmarker} (?<end> [-=]{3,} \s [-=]{3,}$)   }x ,
       },
       :default => {
         :filetype => %r{.*},
@@ -33,7 +33,9 @@ class ExtrComment
         :content  => %r{#{cmarker} (?<content> .* $)      }x ,
         :end      => %r{#{cmarker} (?<end> \s*  \.{3} $)  }x ,
       },
-    } if patterns.empty?
+    }
+
+    @patterns.merge!(patterns)
 
   end
 

@@ -4,7 +4,8 @@
 
 == DESCRIPTION:
 
-extract yaml embeded in source code comments with predefine format.
+extract embeded info (yaml, for example ) in source code comments with
+predefined format.
 
 1. the leading comment string can be different based on the language.
 2. the leading column of yaml docs must be aligned
@@ -12,35 +13,37 @@ extract yaml embeded in source code comments with predefine format.
 ==== Format 1
 
   # ---
-  # Bundle        : ExtrYaml
+  # Gem           : ExtrComment
   # Author        : Zhao Cai
   # Email         : caizhaoff@gmail.com
-  # URL           :
-  # Version       : 0.1
-  # Date Created  : Sun 25 Dec 2011 02:56:01 PM EST
-  # Last Modified : Mon 16 Jan 2012 09:08:15 PM EST
-  # Tag           : [ ruby, yaml, ]
+  # Tag           : [ ruby, yaml, comment ]
   # Dependence    : [ yaml, ]
   # ...
 
 ==== Format 2
 
-  # ------------- - ------------------------------------------------------------
-  # Bundle        : ExtrYaml
+  # ============= = ============================================================
+  # Gem           : ExtrComment
   # Author        : Zhao Cai
   # Email         : caizhaoff@gmail.com
-  # URL           :
-  # Version       : 0.1
-  # Date Created  : Sun 25 Dec 2011 02:56:01 PM EST
-  # Last Modified : Mon 16 Jan 2012 09:08:15 PM EST
-  # Tag           : [ ruby, yaml, ]
+  # Homepage      : https://github.com/zhaocai/extrComment
+  # Tag           : [ ruby, yaml, comment ]
+  # Dependence    : [ yaml, ]
+  # ============= = ============================================================
+
+  # ------------- - ------------------------------------------------------------
+  # Gem           : ExtrComment
+  # Author        : Zhao Cai
+  # Email         : caizhaoff@gmail.com
+  # Homepage      : https://github.com/zhaocai/extrComment
+  # Tag           : [ ruby, yaml, comment ]
   # Dependence    : [ yaml, ]
   # ------------- - ------------------------------------------------------------
 
 
 == FEATURES/PROBLEMS:
 
-* 
+*
 
 == SYNOPSIS:
 
@@ -81,7 +84,7 @@ and generate the RDoc.
 
 (The MIT License)
 
-Copyright (c) 2012 FIX
+Copyright (c) 2012, Zhao Cai
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

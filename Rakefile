@@ -3,21 +3,29 @@
 require 'rubygems'
 require 'hoe'
 
-# Hoe.plugin :compiler
-# Hoe.plugin :gem_prelude_sucks
 Hoe.plugin :gemspec
 Hoe.plugin :git
-# Hoe.plugin :inline
-Hoe.plugin :minitest
-# Hoe.plugin :racc
-# Hoe.plugin :rcov
-# Hoe.plugin :rubyforge
+Hoe.plugin :test
+Hoe.plugin :version
 
-Hoe.spec 'extrComment' do
+Hoe.spec 'ExtrComment' do
 
   developer('Zhao Cai', 'caizhaoff@gmail.com')
 
-  # self.rubyforge_name = 'extrCommentx' # if different than 'extrComment'
+  license 'GPL-3'
+
+  extra_dev_deps << ['rspec', '>= 2.13']
+  extra_dev_deps << ['rake', '>= 10.0.0']
+  extra_dev_deps << ['hoe'] << ['hoe-gemspec'] << ['hoe-git'] << ['hoe-version']
+  # extra_dev_deps << ['guard'] << ['guard-rspec'] << ['terminal-notifier-guard'] << ['growl']
 end
+
+%w{major minor patch}.each { |v| 
+  desc "Bump #{v.capitalize} Version"
+  task "bump:#{v}", [:message] => ["version:bump:#{v}"] do |t, args|
+    m = args[:message] ? args[:message] : "Bump version to #{ENV["VERSION"]}"
+    sh "git commit -am '#{m}'"
+  end
+}
 
 # vim: syntax=ruby

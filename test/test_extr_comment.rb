@@ -1,7 +1,6 @@
 require "test/unit"
 require "extr_comment"
 require 'awesome_print'
-# require 'pry'
 
 
 class TestExtrComment < Test::Unit::TestCase
@@ -72,7 +71,6 @@ __RUBY__
     assert_not_nil(content[:default])
     assert_nil(content[:header])
     assert_equal(content[:default][0][:unbound], valid_content)
-
   end
 
 end
