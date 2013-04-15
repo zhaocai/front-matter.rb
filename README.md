@@ -11,7 +11,7 @@ This gem extracts embeded info (yaml front matters, for example ) in source code
 comments with predefined format:
 
 1. the leading comment string can be different based on the language.
-2. the leading column of yaml docs must be aligned to be converted to yaml.
+2. the leading column of yaml docs should be aligned to be converted to yaml.
 
 ### Format 1
 
@@ -21,16 +21,6 @@ comments with predefined format:
       # Email         : caizhaoff@gmail.com
       # Tag           : [ ruby, yaml, comment ]
       # ---
-
-### Format 2
-
-      # ============= = ============================================================
-      # Gem           : front_matter
-      # Author        : Zhao Cai
-      # Email         : caizhaoff@gmail.com
-      # Homepage      : https://github.com/zhaocai/
-      # Tag           : [ ruby, yaml, comment ]
-      # ============= = ============================================================
 
   OR
 
@@ -42,6 +32,15 @@ comments with predefined format:
       # Tag           : [ ruby, yaml, comment ]
       # ------------- - ------------------------------------------------------------
 
+### Format 2
+      # ---
+      # Gem           : front_matter
+      # Author        : Zhao Cai
+      # Email         : caizhaoff@gmail.com
+      # Tag           : [ ruby, yaml, comment ]
+      # 
+
+      ... source code
 
 
 ## SYNOPSIS:
@@ -55,7 +54,7 @@ fm = FrontMatter.new(:unindent => true, :as_yaml => true)
 file = "README.md"
 
 
-ap YAML.load(fm.extract_file(file)[:valid][0])
+ap YAML.load(fm.extract_file(file)[0])
 
 # {
 #   "Gem"      => "front_matter",
