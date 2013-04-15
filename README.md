@@ -45,7 +45,35 @@ comments with predefined format.
 
 ## SYNOPSIS:
 
+```ruby
+require 'front_matter'
+require 'awesome_print'
 
+fm = FrontMatter.new(:unindent => true)
+
+code = %Q{
+# ---
+#       FileName : extract_sh
+#           Desc : extract shell functions from shell script
+#         Author : Zhao Cai <caizhaoff@gmail.com>
+# ---
+#
+  }
+
+ap fm.extract_lines(code.split("\n"))
+
+# {
+#   :valid => [
+#     [
+#       "FileName : extract_sh",
+#       "    Desc : extract shell functions from shell script",
+#       "  Author : Zhao Cai <caizhaoff@gmail.com>"
+#     ]
+#   ]
+# }
+
+
+```
 
 ## INSTALL:
 

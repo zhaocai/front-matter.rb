@@ -35,7 +35,8 @@ class FrontMatter
           :end      => %r{#{comment_marker} (?<end> \s*    -{3} $)  }x ,
         },
       },
-      :unindent => false
+      :unindent => false,
+      :as_yaml => false
     }
     @options.merge!(options)
   end
@@ -96,15 +97,22 @@ class FrontMatter
       :unbound => [],
     }
 
-    content.each_pair { |kind, v| 
-      v.each { |c| c.each_pair { |status, content| 
+    content.each_pair { |kind, v|
+      v.each { |c| c.each_pair { |status, content|
         results[status].push(content) unless content.empty? }
       }
     }
     results.delete_if {|status, result| result.empty?}
+
     if @options[:unindent]
       results.traverse! { |k,v|
         [k, v.map {|i| i.unindent }]
+      }
+    end
+
+    if @options[:as_yaml]
+      results.traverse! { |k,v|
+        [k, v.map {|i| "---\n#{i.join("\n")}"}]
       }
     end
     results
