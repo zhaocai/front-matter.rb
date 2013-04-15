@@ -49,11 +49,11 @@ end
 
 
 options = parse_opt()
-ec = FrontMatter.new()
+fm = FrontMatter.new()
 
 ARGV.each do |f|
   if File.readable?(f)
-    content = ec.extract_file(f)
+    content = fm.extract_file(f)
     ap content
   else
     puts "File: #{f} is not readable!"
@@ -61,7 +61,7 @@ ARGV.each do |f|
 end
 
 # begin
-#   comments = ec.extract(f)
+#   comments = fm.extract(f)
 # rescue IOError => e
 #   puts "Could not write to file"
 # end

@@ -1,7 +1,7 @@
 # Front Matter
 
 * home  :: http://zhaocai.github.com/front-matter.rb/
-* rdoc  :: http://rubydoc.info/gems/front-matter.rb/
+* rdoc  :: http://rubydoc.info/gems/front-matter/
 * code  :: https://github.com/zhaocai/front-matter.rb
 * bugs  :: https://github.com/zhaocai/front-matter.rb/issues
 

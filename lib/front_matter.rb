@@ -14,9 +14,9 @@ require 'facets/hash'
 require 'front_matter/core/array'
 
 class FrontMatter
-  VERSION = '1.0.1'
+  VERSION = '1.1.0'
   attr_accessor :options
-  def initialize( options={} )
+  def initialize( opts={} )
     comment_marker   = %r{(?<comment> ^\s* \W{1,2} )}x
     @options = {
       :patterns => {
@@ -35,10 +35,10 @@ class FrontMatter
           :end      => %r{#{comment_marker} (?<end> \s*    -{3} $)  }x ,
         },
       },
-      :unindent => false,
-      :as_yaml => false
+      :unindent   => false ,
+      :as_yaml    => false ,
     }
-    @options.merge!(options)
+    @options.merge!(opts)
   end
 
   def extract_lines(lines, filetype=[])
@@ -118,21 +118,15 @@ class FrontMatter
     results
   end
 
-  def extract_file(infile, filetype=[])
-    return self.extract_lines(File.readlines(infile).map(&:chomp), filetype)
-  end
+  def extract_file(path, opts={})
+    filetype = opts[:filetype] ? opts[:filetype] : []
+    firstline = opts[:firstline] ? opts[:firstline] : 0
+    lastline = opts[:lastline] ? opts[:lastline] : -1
 
-  def unindent(lines)
-    indent = lines.select {|line| !line.strip.empty? }.map {|line| line.index(/[^\s]/) }.compact.min || 0
-    lines.map {|line| line.gsub(/^[[:blank:]]{#{indent}}/, '')}
+    return extract_lines(File.readlines(path)[firstline..lastline].map(&:chomp), filetype)
   end
 
 end
-
-# ---
-#   a : "b"
-#   c : d
-# ---
 
 
 
