@@ -1,5 +1,7 @@
+.gemtest
 Gemfile
 Gemfile.lock
+Guardfile
 History.txt
 Manifest.txt
 README.txt
@@ -7,5 +9,6 @@ Rakefile
 bin/front_matter
 front-matter.gemspec
 lib/front_matter.rb
+lib/front_matter/core/array.rb
 spec/front_matter_spec.rb
 spec/spec_helper.rb
