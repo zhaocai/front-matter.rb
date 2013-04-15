@@ -4,7 +4,7 @@ Gemfile.lock
 Guardfile
 History.txt
 Manifest.txt
-README.txt
+README.md
 Rakefile
 bin/front_matter
 front-matter.gemspec
