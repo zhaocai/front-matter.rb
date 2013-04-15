@@ -15,7 +15,7 @@ require 'facets/string'
 require 'front_matter/core/array'
 
 class FrontMatter
-  VERSION = '1.2.0'
+  VERSION = '1.2.1'
   attr_accessor :setting
   def initialize( opts={} )
     comment_marker   = %r{(?<comment> ^\s* \W{1,2} )}x
@@ -71,7 +71,7 @@ class FrontMatter
     if opts[:firstline] || opts[:lastline]
       firstline = opts[:firstline] ? opts[:firstline] - 1 : 0
       lastline = opts[:lastline] ? opts[:lastline] -1 : -1
-      return extract(File.readlines(path)[firstline..lastline].join("\n"), filetype)
+      return extract(File.readlines(path)[firstline..lastline].join, filetype)
     else
       return extract(File.read(path), filetype)
     end
@@ -81,4 +81,7 @@ class FrontMatter
 end
 
 
-
+if __FILE__ == $0
+  fm = FrontMatter.new(:unindent => true, :as_yaml => true)
+  puts fm.extract_file(__FILE__, :firstline => 1, :lastline => 15)
+end

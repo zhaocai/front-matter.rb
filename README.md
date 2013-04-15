@@ -53,14 +53,13 @@ require "yaml"
 fm = FrontMatter.new(:unindent => true, :as_yaml => true)
 file = "README.md"
 
-
-ap YAML.load(fm.extract_file(file)[0])
+front_matters = fm.extract_file(file)
+ap YAML.load(front_matters[0])
 
 # {
 #   "Gem"      => "front_matter",
 #   "Author"   => "Zhao Cai",
 #   "Email"    => "caizhaoff@gmail.com",
-#   "Homepage" => "https://github.com/zhaocai/",
 #   "Tag"      => [
 #     "ruby",
 #     "yaml",
