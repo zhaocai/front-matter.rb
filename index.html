@@ -35,7 +35,7 @@
 <ul>
 <li>home  :: <a href="http://zhaocai.github.com/front-matter.rb/">http://zhaocai.github.com/front-matter.rb/</a>
 </li>
-<li>rdoc  :: <a href="http://rubydoc.info/gems/front-matter.rb/">http://rubydoc.info/gems/front-matter.rb/</a>
+<li>rdoc  :: <a href="http://rubydoc.info/gems/front-matter/">http://rubydoc.info/gems/front-matter/</a>
 </li>
 <li>code  :: <a href="https://github.com/zhaocai/front-matter.rb">https://github.com/zhaocai/front-matter.rb</a>
 </li>
@@ -48,7 +48,7 @@ comments with predefined format:</p>
 
 <ol>
 <li>the leading comment string can be different based on the language.</li>
-<li>the leading column of yaml docs must be aligned to be converted to yaml.</li>
+<li>the leading column of yaml docs should be aligned to be converted to yaml.</li>
 </ol><h3>Format 1</h3>
 
 <pre><code>  # ---
@@ -57,17 +57,6 @@ comments with predefined format:</p>
   # Email         : caizhaoff@gmail.com
   # Tag           : [ ruby, yaml, comment ]
   # ---
-</code></pre>
-
-<h3>Format 2</h3>
-
-<pre><code>  # ============= = ============================================================
-  # Gem           : front_matter
-  # Author        : Zhao Cai
-  # Email         : caizhaoff@gmail.com
-  # Homepage      : https://github.com/zhaocai/
-  # Tag           : [ ruby, yaml, comment ]
-  # ============= = ============================================================
 </code></pre>
 
 <p>OR</p>
@@ -81,6 +70,18 @@ comments with predefined format:</p>
   # ------------- - ------------------------------------------------------------
 </code></pre>
 
+<h3>Format 2</h3>
+
+<pre><code>  # ---
+  # Gem           : front_matter
+  # Author        : Zhao Cai
+  # Email         : caizhaoff@gmail.com
+  # Tag           : [ ruby, yaml, comment ]
+  # 
+
+  ... source code
+</code></pre>
+
 <h2>SYNOPSIS:</h2>
 
 <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'front_matter'</span>
@@ -90,14 +91,13 @@ comments with predefined format:</p>
 <span class="n">fm</span> <span class="o">=</span> <span class="no">FrontMatter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:unindent</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:as_yaml</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span>
 <span class="n">file</span> <span class="o">=</span> <span class="s2">"README.md"</span>
 
-
-<span class="n">ap</span> <span class="no">YAML</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">extract_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">[</span><span class="ss">:valid</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+<span class="n">front_matters</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">extract_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="n">ap</span> <span class="no">YAML</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">front_matters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
 
 <span class="c1"># {</span>
 <span class="c1">#   "Gem"      =&gt; "front_matter",</span>
 <span class="c1">#   "Author"   =&gt; "Zhao Cai",</span>
 <span class="c1">#   "Email"    =&gt; "caizhaoff@gmail.com",</span>
-<span class="c1">#   "Homepage" =&gt; "https://github.com/zhaocai/",</span>
 <span class="c1">#   "Tag"      =&gt; [</span>
 <span class="c1">#     "ruby",</span>
 <span class="c1">#     "yaml",</span>
