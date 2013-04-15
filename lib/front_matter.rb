@@ -11,119 +11,71 @@
 # =============== ============================================================
 
 require 'facets/hash'
+require 'facets/string'
 require 'front_matter/core/array'
 
 class FrontMatter
-  VERSION = '1.1.0'
-  attr_accessor :options
+  VERSION = '1.2.0'
+  attr_accessor :setting
   def initialize( opts={} )
     comment_marker   = %r{(?<comment> ^\s* \W{1,2} )}x
-    @options = {
+    @setting = {
       :patterns => {
         :header => {
-          :comment_marker  => comment_marker,
           :filetype => %r{.*},
-          :start    => %r{#{comment_marker} (?<start> \s* [-=]{3,} .* [-=]{3,}$) }x ,
-          :content  => %r{#{comment_marker} (?<content> .* $)                }x ,
-          :end      => %r{#{comment_marker} (?<end> \s* [-=]{3,} .* [-=]{3,}$)   }x ,
+          :pattern  => %r{
+            (?<start> #{comment_marker} \s* [-=#*]{3,} .* )[\r\n]
+            (?<content> (?: \k<comment> .* [\r\n])+)
+            \k<start>
+            }x
         },
         :yaml => {
-          :comment_marker  => comment_marker,
           :filetype => %r{.*},
-          :start    => %r{#{comment_marker} (?<start> \s*  -{3} $) }x ,
-          :content  => %r{#{comment_marker} (?<content> .* $)      }x ,
-          :end      => %r{#{comment_marker} (?<end> \s*    -{3} $)  }x ,
+          :pattern  => %r{
+            (?<start> #{comment_marker} \s* -{3} )[\r\n]
+            (?<content> (?: \k<comment> .* [\r\n])+)
+            (?<empty>^ \s* $)
+            }x
         },
       },
       :unindent   => false ,
       :as_yaml    => false ,
     }
-    @options.merge!(opts)
+    @setting.merge!(opts)
   end
 
-  def extract_lines(lines, filetype=[])
-    content={}
+  def extract(contents, filetype=[])
     unless filetype.empty?
-      patterns = @options[:patterns].select { |kind, pattern|
+      patterns = @setting[:patterns].select { |kind, pattern|
         filetype.any { |ft| pattern[:filetype].match(ft)}
       }
     else
-      patterns = @options[:patterns]
+      patterns = @setting[:patterns]
     end
 
-    patterns.each { |kind, pattern|
-      content[kind] = []
-      in_comment = false
-      in_content = {
-        :valid   => [],
-        :invalid => [],
-        :unbound => [],
-      }
-
-      lines.each { |line|
-        if ! in_comment
-          case line
-          when pattern[:start]
-            in_comment = true
-            next
-          end
-        else
-          if pattern[:end] =~ line
-            in_comment = false
-            content[kind].push(in_content)
-            next
-          end
-
-          m = pattern[:content].match(line)
-          begin
-            in_content[:valid].push(m[:content])
-          rescue IndexError,NoMethodError
-            in_content[:invalid].push(line)
-          end
-        end
-      }
-
-      # fail to match ending
-      if in_comment
-        in_content[:unbound] = in_content[:valid]
-        in_content[:valid] = []
-        content[kind].push(in_content)
-      end
+    union_patterns = Regexp.union(patterns.collect{ |k, p| p[:pattern] })
+    results = [] 
+    contents.mscan(union_patterns).each { |m| 
+      results << m[:content].gsub(/^#{Regexp.escape(m[:comment])}/, "") 
     }
+    
+    results.map! { |r| r.unindent } if @setting[:unindent]
+    results.map! { |r| "---\n#{r}" } if @setting[:as_yaml]
 
-    results = {
-      :valid   => [],
-      :invalid => [],
-      :unbound => [],
-    }
-
-    content.each_pair { |kind, v|
-      v.each { |c| c.each_pair { |status, content|
-        results[status].push(content) unless content.empty? }
-      }
-    }
-    results.delete_if {|status, result| result.empty?}
-
-    if @options[:unindent]
-      results.traverse! { |k,v|
-        [k, v.map {|i| i.unindent }]
-      }
-    end
-
-    if @options[:as_yaml]
-      results.traverse! { |k,v|
-        [k, v.map {|i| "---\n#{i.join("\n")}"}]
-      }
-    end
-    results
+    return results
   end
 
   def extract_file(path, opts={})
-    filetype = opts[:filetype] ? opts[:filetype] : []
-    firstline = opts[:firstline] ? opts[:firstline] : 0
-    lastline = opts[:lastline] ? opts[:lastline] : -1
 
-    return extract_lines(File.readlines(path)[firstline..lastline].map(&:chomp), filetype)
+    filetype = opts[:filetype] ? opts[:filetype] : []
+    if opts[:firstline] || opts[:lastline]
+      firstline = opts[:firstline] ? opts[:firstline] - 1 : 0
+      lastline = opts[:lastline] ? opts[:lastline] -1 : -1
+      return extract(File.readlines(path)[firstline..lastline].join("\n"), filetype)
+    else
+      return extract(File.read(path), filetype)
+    end
+
   end
 
 end

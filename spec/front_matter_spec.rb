@@ -1,10 +1,9 @@
 require "spec_helper"
 require "yaml"
 describe "Front_Matter" do
-    before :all do
-      Dir.chdir("test/")
-    end
-
+  before :all do
+    Dir.chdir("test/")
+  end
 
   context "Extraction" do
     before :all do
@@ -24,12 +23,12 @@ describe "Front_Matter" do
       valid_content = [
         "      FileName : extract_sh"                                ,
         "      Desc     : extract shell functions from shell script" ,
-        "      Author   : Zhao Cai <caizhaoff@gmail.com>"
+        "      Author   : Zhao Cai <caizhaoff@gmail.com>",
+        ""
       ]
-      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      front_matters = @fm.extract(code)
 
-      content[:valid][0].should == valid_content
-
+      front_matters[0].should == valid_content.join("\n")
     end
 
     it "should extract header front matter" do
@@ -44,11 +43,12 @@ describe "Front_Matter" do
       valid_content = [
         "      FileName : extract_sh"                                ,
         "      Desc     : extract shell functions from shell script" ,
-        "      Author   : Zhao Cai <caizhaoff@gmail.com>"
+        "      Author   : Zhao Cai <caizhaoff@gmail.com>",
+        ""
       ]
-      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      front_matters = @fm.extract(code)
 
-      content[:valid][0].should == valid_content
+      front_matters[0].should == valid_content.join("\n")
 
     end
 
@@ -66,10 +66,11 @@ describe "Front_Matter" do
         "      FileName : extract_sh"                                ,
         "      Desc     : extract shell functions from shell script" ,
         "      Author   : Zhao Cai <caizhaoff@gmail.com>",
+        ""
       ]
-      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      front_matters = @fm.extract(code)
 
-      content[:unbound][0].should == valid_content
+      front_matters[0].should == valid_content.join("\n")
     end
   end
 
@@ -93,11 +94,12 @@ describe "Front_Matter" do
       valid_content = [
         "FileName : extract_sh"                                ,
         "Desc     : extract shell functions from shell script" ,
-        "Author   : Zhao Cai <caizhaoff@gmail.com>"
+        "Author   : Zhao Cai <caizhaoff@gmail.com>",
+        ""
       ]
-      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      front_matters = @fm.extract(code)
 
-      content[:valid][0].should == valid_content
+      front_matters[0].should == valid_content.join("\n")
 
     end
 
@@ -113,11 +115,12 @@ describe "Front_Matter" do
       valid_content = [
         "FileName : extract_sh"                                ,
         "Desc     : extract shell functions from shell script" ,
-        "Author   : Zhao Cai <caizhaoff@gmail.com>"
+        "Author   : Zhao Cai <caizhaoff@gmail.com>",
+        ""
       ]
-      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      front_matters = @fm.extract(code)
 
-      content[:valid][0].should == valid_content
+      front_matters[0].should == valid_content.join("\n")
 
     end
 
@@ -135,10 +138,11 @@ describe "Front_Matter" do
         "FileName : extract_sh"                                ,
         "Desc     : extract shell functions from shell script" ,
         "Author   : Zhao Cai <caizhaoff@gmail.com>",
+        ""
       ]
-      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      front_matters = @fm.extract(code)
 
-      content[:unbound][0].should == valid_content
+      front_matters[0].should == valid_content.join("\n")
     end
   end
 
@@ -163,10 +167,10 @@ describe "Front_Matter" do
         "Desc     : extract shell functions from shell script" ,
         "Author   : Zhao Cai <caizhaoff@gmail.com>"
       ].join("\n"))
-      content = @fm.extract_lines(code.split("\n"))
 
-      YAML.load(content[:valid][0]).should == valid_yaml
+      front_matters = @fm.extract(code)
 
+      YAML.load(front_matters[0]).should == valid_yaml
     end
 
   end
