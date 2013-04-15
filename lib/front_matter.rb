@@ -10,41 +10,44 @@
 #                  Released under current GPL license.
 # =============== ============================================================
 
-# [TODO]( align, use unindent ) @zhaocai @start(2012-08-25 05:54)
+require 'facets/hash'
+require 'front_matter/core/array'
+
 class FrontMatter
   VERSION = '1.0.1'
-  attr_accessor :patterns
-  def initialize(patterns={} )
+  attr_accessor :options
+  def initialize( options={} )
     comment_marker   = %r{(?<comment> ^\s* \W{1,2} )}x
-    @patterns = {
-      :header => {
-        :comment_marker  => comment_marker,
-        :filetype => %r{.*},
-        :start    => %r{#{comment_marker} (?<start> \s* [-=]{3,} \s [-=]{3,}$) }x ,
-        :content  => %r{#{comment_marker} (?<content> .* $)                }x ,
-        :end      => %r{#{comment_marker} (?<end> \s* [-=]{3,} \s [-=]{3,}$)   }x ,
+    @options = {
+      :patterns => {
+        :header => {
+          :comment_marker  => comment_marker,
+          :filetype => %r{.*},
+          :start    => %r{#{comment_marker} (?<start> \s* [-=]{3,} \s [-=]{3,}$) }x ,
+          :content  => %r{#{comment_marker} (?<content> .* $)                }x ,
+          :end      => %r{#{comment_marker} (?<end> \s* [-=]{3,} \s [-=]{3,}$)   }x ,
+        },
+        :yaml => {
+          :comment_marker  => comment_marker,
+          :filetype => %r{.*},
+          :start    => %r{#{comment_marker} (?<start> \s*  -{3} $) }x ,
+          :content  => %r{#{comment_marker} (?<content> .* $)      }x ,
+          :end      => %r{#{comment_marker} (?<end> \s*    -{3} $)  }x ,
+        },
       },
-      :yaml => {
-        :comment_marker  => comment_marker,
-        :filetype => %r{.*},
-        :start    => %r{#{comment_marker} (?<start> \s*  -{3} $) }x ,
-        :content  => %r{#{comment_marker} (?<content> .* $)      }x ,
-        :end      => %r{#{comment_marker} (?<end> \s*    -{3} $)  }x ,
-      },
+      :unindent => false
     }
-
-    @patterns.merge!(patterns)
-
+    @options.merge!(options)
   end
 
   def extract_lines(lines, filetype=[])
     content={}
     unless filetype.empty?
-      patterns = @patterns.select { |kind, pattern|
+      patterns = @options[:patterns].select { |kind, pattern|
         filetype.any { |ft| pattern[:filetype].match(ft)}
       }
     else
-      patterns = @patterns
+      patterns = @options[:patterns]
     end
 
     patterns.each { |kind, pattern|
@@ -87,14 +90,41 @@ class FrontMatter
       end
     }
 
-    return content.delete_if {|kind, pattern| pattern.empty?}
+    results = {
+      :valid   => [],
+      :invalid => [],
+      :unbound => [],
+    }
+
+    content.each_pair { |kind, v| 
+      v.each { |c| c.each_pair { |status, content| 
+        results[status].push(content) unless content.empty? }
+      }
+    }
+    results.delete_if {|status, result| result.empty?}
+    if @options[:unindent]
+      results.traverse! { |k,v|
+        [k, v.map {|i| i.unindent }]
+      }
+    end
+    results
   end
 
   def extract_file(infile, filetype=[])
     return self.extract_lines(File.readlines(infile).map(&:chomp), filetype)
   end
 
+  def unindent(lines)
+    indent = lines.select {|line| !line.strip.empty? }.map {|line| line.index(/[^\s]/) }.compact.min || 0
+    lines.map {|line| line.gsub(/^[[:blank:]]{#{indent}}/, '')}
+  end
+
 end
+
+# ---
+#   a : "b"
+#   c : d
+# ---
 
 
 

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "front-matter"
-  s.version = "1.0.1.20130414202019"
+  s.version = "1.0.1.20130414202700"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Zhao Cai"]
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email = ["caizhaoff@gmail.com"]
   s.executables = ["front_matter"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = [".autotest", "History.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/front_matter", "lib/front_matter.rb", "test/test_front_matter.rb", ".gemtest"]
+  s.files = ["Gemfile", "Gemfile.lock", "History.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/front_matter", "front-matter.gemspec", "lib/front_matter.rb", "spec/front_matter_spec.rb", "spec/spec_helper.rb", "test/test_front_matter.rb", ".gemtest"]
   s.homepage = "https://github.com/zhaocai/extrComment"
   s.licenses = ["GPL-3"]
   s.rdoc_options = ["--main", "README.txt"]
@@ -34,10 +34,12 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<hoe-git>, [">= 0"])
       s.add_development_dependency(%q<hoe-version>, [">= 0"])
       s.add_development_dependency(%q<awesome_print>, [">= 1.1.0"])
-      s.add_development_dependency(%q<guard>, [">= 0"])
+      s.add_development_dependency(%q<guard>, ["~> 1.7.0"])
       s.add_development_dependency(%q<guard-rspec>, [">= 0"])
+      s.add_development_dependency(%q<guard-bundler>, [">= 0"])
       s.add_development_dependency(%q<terminal-notifier-guard>, [">= 0"])
       s.add_development_dependency(%q<growl>, [">= 0"])
+      s.add_development_dependency(%q<rb-fsevent>, ["~> 0.9"])
     else
       s.add_dependency(%q<facets>, [">= 2.9.0"])
       s.add_dependency(%q<rdoc>, ["~> 4.0"])
@@ -48,10 +50,12 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<hoe-git>, [">= 0"])
       s.add_dependency(%q<hoe-version>, [">= 0"])
       s.add_dependency(%q<awesome_print>, [">= 1.1.0"])
-      s.add_dependency(%q<guard>, [">= 0"])
+      s.add_dependency(%q<guard>, ["~> 1.7.0"])
       s.add_dependency(%q<guard-rspec>, [">= 0"])
+      s.add_dependency(%q<guard-bundler>, [">= 0"])
       s.add_dependency(%q<terminal-notifier-guard>, [">= 0"])
       s.add_dependency(%q<growl>, [">= 0"])
+      s.add_dependency(%q<rb-fsevent>, ["~> 0.9"])
     end
   else
     s.add_dependency(%q<facets>, [">= 2.9.0"])
@@ -63,9 +67,11 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<hoe-git>, [">= 0"])
     s.add_dependency(%q<hoe-version>, [">= 0"])
     s.add_dependency(%q<awesome_print>, [">= 1.1.0"])
-    s.add_dependency(%q<guard>, [">= 0"])
+    s.add_dependency(%q<guard>, ["~> 1.7.0"])
     s.add_dependency(%q<guard-rspec>, [">= 0"])
+    s.add_dependency(%q<guard-bundler>, [">= 0"])
     s.add_dependency(%q<terminal-notifier-guard>, [">= 0"])
     s.add_dependency(%q<growl>, [">= 0"])
+    s.add_dependency(%q<rb-fsevent>, ["~> 0.9"])
   end
 end

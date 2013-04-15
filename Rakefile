@@ -5,7 +5,6 @@ require 'hoe'
 
 Hoe.plugin :gemspec
 Hoe.plugin :git
-Hoe.plugin :test
 Hoe.plugin :version
 
 Hoe.spec 'front-matter' do
@@ -22,7 +21,9 @@ Hoe.spec 'front-matter' do
   extra_dev_deps << ['rake', '>= 10.0.0']
   extra_dev_deps << ['hoe'] << ['hoe-gemspec'] << ['hoe-git'] << ['hoe-version']
   extra_dev_deps << ['awesome_print', '>= 1.1.0']
-  extra_dev_deps << ['guard'] << ['guard-rspec'] << ['terminal-notifier-guard'] << ['growl']
+  extra_dev_deps << ['guard', '~> 1.7.0'] << ['guard-rspec'] << ['guard-bundler']
+  extra_dev_deps << ['terminal-notifier-guard'] << ['growl'] << ['rb-fsevent', '~> 0.9']
+
 end
 
 %w{major minor patch}.each { |v| 

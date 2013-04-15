@@ -1,34 +1,150 @@
 require "spec_helper"
 
 describe "Front_Matter" do
+    before :all do
+      Dir.chdir("test/")
+    end
 
-  before :all do
-    @fm =  FrontMatter.new
-    Dir.chdir("test/")
-  end
 
-  it "should extract yaml front matter" do
-    code = %Q{
+  context "Extraction" do
+    before :all do
+      @fm =  FrontMatter.new
+    end
+
+    it "should extract yaml front matter" do
+      code = %Q{
       # ---
       #       FileName : extract_sh
       #           Desc : extract shell functions from shell script
       #         Author : Zhao Cai <caizhaoff@gmail.com>
       # ---
       # 
-    }.unindent
+      }.unindent
 
-    valid_content = [
-      "FileName : extract_sh",
-      "Desc : extract shell functions from shell script",
-      "Author : Zhao Cai <caizhaoff@gmail.com>"
-    ]
-    content = @fm.extract_lines(code.split("\n").map(&:chomp))
+      valid_content = [
+        "      FileName : extract_sh"                                ,
+        "          Desc : extract shell functions from shell script" ,
+        "        Author : Zhao Cai <caizhaoff@gmail.com>"
+      ]
+      content = @fm.extract_lines(code.split("\n").map(&:chomp))
 
-    content[:header].should_be_nil
-    content[:yaml][0][:valid].should == valid_content
+      content[:valid][0].should == valid_content
 
+    end
+
+    it "should extract header front matter" do
+      code = %Q{
+      # --------------- ------------------------------------------------------------
+      #       FileName : extract_sh
+      #           Desc : extract shell functions from shell script
+      #         Author : Zhao Cai <caizhaoff@gmail.com>
+      # --------------- ------------------------------------------------------------
+      }.unindent
+
+      valid_content = [
+        "      FileName : extract_sh"                                ,
+        "          Desc : extract shell functions from shell script" ,
+        "        Author : Zhao Cai <caizhaoff@gmail.com>"
+      ]
+      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+
+      content[:valid][0].should == valid_content
+
+    end
+
+    it "should properly extract yaml front matter when there is no ending" do
+      code = %Q{
+      # ---
+      #       FileName : extract_sh
+      #           Desc : extract shell functions from shell script
+      #         Author : Zhao Cai <caizhaoff@gmail.com>
+
+      abc
+      }.unindent
+
+      valid_content = [
+        "      FileName : extract_sh"                                ,
+        "          Desc : extract shell functions from shell script" ,
+        "        Author : Zhao Cai <caizhaoff@gmail.com>",
+      ]
+      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+
+      content[:unbound][0].should == valid_content
+    end
   end
 
+
+
+  context "Unindent" do
+    before :all do
+      @fm =  FrontMatter.new(:unindent => true)
+    end
+
+    it "should extract yaml front matter" do
+      code = %Q{
+      # ---
+      #       FileName : extract_sh
+      #           Desc : extract shell functions from shell script
+      #         Author : Zhao Cai <caizhaoff@gmail.com>
+      # ---
+      # 
+      }.unindent
+
+      valid_content = [
+        "FileName : extract_sh"                                ,
+        "    Desc : extract shell functions from shell script" ,
+        "  Author : Zhao Cai <caizhaoff@gmail.com>"
+      ]
+      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+
+      content[:valid][0].should == valid_content
+
+    end
+
+    it "should extract header front matter" do
+      code = %Q{
+      # --------------- ------------------------------------------------------------
+      #       FileName : extract_sh
+      #           Desc : extract shell functions from shell script
+      #         Author : Zhao Cai <caizhaoff@gmail.com>
+      # --------------- ------------------------------------------------------------
+      }.unindent
+
+      valid_content = [
+        "FileName : extract_sh"                                ,
+        "    Desc : extract shell functions from shell script" ,
+        "  Author : Zhao Cai <caizhaoff@gmail.com>"
+      ]
+      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+
+      content[:valid][0].should == valid_content
+
+    end
+
+    it "should properly extract yaml front matter when there is no ending" do
+      code = %Q{
+      # ---
+      #       FileName : extract_sh
+      #           Desc : extract shell functions from shell script
+      #         Author : Zhao Cai <caizhaoff@gmail.com>
+
+      abc
+      }.unindent
+
+      valid_content = [
+        "FileName : extract_sh"                                ,
+        "    Desc : extract shell functions from shell script" ,
+        "  Author : Zhao Cai <caizhaoff@gmail.com>",
+      ]
+      content = @fm.extract_lines(code.split("\n").map(&:chomp))
+
+      content[:unbound][0].should == valid_content
+    end
+  end
+
+  context "YAML" do
+
+  end
 end
 
 
