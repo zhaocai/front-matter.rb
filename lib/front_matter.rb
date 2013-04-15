@@ -1,37 +1,35 @@
 #!/usr/bin/env ruby
 # =============== ============================================================
-#  FileName      : extr_comment
-#  Desc          : extract comment from source code
+#  Desc          : extract (YAML) front matter from source code
 #  Author        : Zhao Cai <caizhaoff@gmail.com>
-#  HomePage      : https://github.com/zhaocai/extr_comment.rb
-#  Version       : 0.1
+#  HomePage      : https://github.com/zhaocai/front_matter.rb
 #  Date Created  : Sat 25 Aug 2012 01:36:13 AM EDT
-#  Last Modified : Fri 14 Sep 2012 09:05:30 PM EDT
-#  Tag           : [ ruby, comment, extract ]
+#  Last Modified : Sun 14 Apr 2013 08:05:00 PM EDT
+#  Tag           : [ ruby, YAML, comment, extract ]
 #  Copyright     : (c) 2012 by Zhao Cai,
 #                  Released under current GPL license.
 # =============== ============================================================
 
-# [TODO]( align ) @zhaocai @start(2012-08-25 05:54)
-class ExtrComment
+# [TODO]( align, use unindent ) @zhaocai @start(2012-08-25 05:54)
+class FrontMatter
   VERSION = '1.0.1'
   attr_accessor :patterns
   def initialize(patterns={} )
-    cmarker   = %r{(?<comment> ^\s* \W{1,2} \s*)}x
+    comment_marker   = %r{(?<comment> ^\s* \W{1,2} )}x
     @patterns = {
       :header => {
+        :comment_marker  => comment_marker,
         :filetype => %r{.*},
-        :cmarker  => cmarker,
-        :start    => %r{#{cmarker} (?<start> [-=]{3,} \s [-=]{3,}$) }x ,
-        :content  => %r{#{cmarker} (?<content> .* $)          }x ,
-        :end      => %r{#{cmarker} (?<end> [-=]{3,} \s [-=]{3,}$)   }x ,
+        :start    => %r{#{comment_marker} (?<start> \s* [-=]{3,} \s [-=]{3,}$) }x ,
+        :content  => %r{#{comment_marker} (?<content> .* $)                }x ,
+        :end      => %r{#{comment_marker} (?<end> \s* [-=]{3,} \s [-=]{3,}$)   }x ,
       },
-      :default => {
+      :yaml => {
+        :comment_marker  => comment_marker,
         :filetype => %r{.*},
-        :cmarker  => cmarker,
-        :start    => %r{#{cmarker} (?<start> \s*  -{3} $) }x ,
-        :content  => %r{#{cmarker} (?<content> .* $)      }x ,
-        :end      => %r{#{cmarker} (?<end> \s*  \.{3} $)  }x ,
+        :start    => %r{#{comment_marker} (?<start> \s*  -{3} $) }x ,
+        :content  => %r{#{comment_marker} (?<content> .* $)      }x ,
+        :end      => %r{#{comment_marker} (?<end> \s*    -{3} $)  }x ,
       },
     }
 
@@ -42,15 +40,15 @@ class ExtrComment
   def extract_lines(lines, filetype=[])
     content={}
     unless filetype.empty?
-      patterns = @patterns.select { |k,v|
-        filetype.any { |ft| v[:filetype].match(ft)}
+      patterns = @patterns.select { |kind, pattern|
+        filetype.any { |ft| pattern[:filetype].match(ft)}
       }
     else
       patterns = @patterns
     end
 
-    patterns.each { |k, v|
-      content[k] = []
+    patterns.each { |kind, pattern|
+      content[kind] = []
       in_comment = false
       in_content = {
         :valid   => [],
@@ -61,18 +59,18 @@ class ExtrComment
       lines.each { |line|
         if ! in_comment
           case line
-          when v[:start]
+          when pattern[:start]
             in_comment = true
             next
           end
         else
-          if v[:end] =~ line
+          if pattern[:end] =~ line
             in_comment = false
-            content[k].push(in_content)
+            content[kind].push(in_content)
             next
           end
 
-          m = v[:content].match(line)
+          m = pattern[:content].match(line)
           begin
             in_content[:valid].push(m[:content])
           rescue IndexError,NoMethodError
@@ -85,11 +83,11 @@ class ExtrComment
       if in_comment
         in_content[:unbound] = in_content[:valid]
         in_content[:valid] = []
-        content[k].push(in_content)
+        content[kind].push(in_content)
       end
     }
 
-    return content.delete_if {|k, v| v.empty?}
+    return content.delete_if {|kind, pattern| pattern.empty?}
   end
 
   def extract_file(infile, filetype=[])

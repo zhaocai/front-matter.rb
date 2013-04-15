@@ -1,8 +1,11 @@
-.autotest
+Gemfile
+Gemfile.lock
 History.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/extr_comment
-lib/extr_comment.rb
-test/test_extr_comment.rb
+bin/front_matter
+front-matter.gemspec
+lib/front_matter.rb
+spec/front_matter_spec.rb
+spec/spec_helper.rb

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-require "extr_comment"
+require "front_matter"
 require 'optparse'
 require 'awesome_print'
 
@@ -49,7 +49,7 @@ end
 
 
 options = parse_opt()
-ec = ExtrComment.new()
+ec = FrontMatter.new()
 
 ARGV.each do |f|
   if File.readable?(f)

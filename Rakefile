@@ -8,16 +8,21 @@ Hoe.plugin :git
 Hoe.plugin :test
 Hoe.plugin :version
 
-Hoe.spec 'ExtrComment' do
+Hoe.spec 'front-matter' do
 
   developer('Zhao Cai', 'caizhaoff@gmail.com')
 
   license 'GPL-3'
 
+  extra_deps << ['facets', '>= 2.9.0']
+
+
+
   extra_dev_deps << ['rspec', '>= 2.13']
   extra_dev_deps << ['rake', '>= 10.0.0']
   extra_dev_deps << ['hoe'] << ['hoe-gemspec'] << ['hoe-git'] << ['hoe-version']
-  # extra_dev_deps << ['guard'] << ['guard-rspec'] << ['terminal-notifier-guard'] << ['growl']
+  extra_dev_deps << ['awesome_print', '>= 1.1.0']
+  extra_dev_deps << ['guard'] << ['guard-rspec'] << ['terminal-notifier-guard'] << ['growl']
 end
 
 %w{major minor patch}.each { |v| 
