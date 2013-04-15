@@ -8,15 +8,15 @@
 ## DESCRIPTION:
 
 This gem extracts embeded info (yaml front matters, for example ) in source code
-comments with predefined format.
+comments with predefined format:
 
 1. the leading comment string can be different based on the language.
-2. the leading column of yaml docs must be aligned
+2. the leading column of yaml docs must be aligned to be converted to yaml.
 
 ### Format 1
 
       # ---
-      # Gem           : ExtrComment
+      # Gem           : front_matter
       # Author        : Zhao Cai
       # Email         : caizhaoff@gmail.com
       # Tag           : [ ruby, yaml, comment ]
@@ -25,7 +25,7 @@ comments with predefined format.
 ### Format 2
 
       # ============= = ============================================================
-      # Gem           : ExtrComment
+      # Gem           : front_matter
       # Author        : Zhao Cai
       # Email         : caizhaoff@gmail.com
       # Homepage      : https://github.com/zhaocai/
@@ -35,7 +35,7 @@ comments with predefined format.
   OR
 
       # ------------- - ------------------------------------------------------------
-      # Gem           : ExtrComment
+      # Gem           : front_matter
       # Author        : Zhao Cai
       # Email         : caizhaoff@gmail.com
       # Homepage      : https://github.com/zhaocai/
@@ -43,32 +43,29 @@ comments with predefined format.
       # ------------- - ------------------------------------------------------------
 
 
+
 ## SYNOPSIS:
 
 ```ruby
 require 'front_matter'
 require 'awesome_print'
+require "yaml"
 
-fm = FrontMatter.new(:unindent => true)
+fm = FrontMatter.new(:unindent => true, :as_yaml => true)
+file = "README.md"
 
-code = %Q{
-# ---
-#       FileName : extract_sh
-#           Desc : extract shell functions from shell script
-#         Author : Zhao Cai <caizhaoff@gmail.com>
-# ---
-#
-  }
 
-ap fm.extract_lines(code.split("\n"))
+ap YAML.load(fm.extract_file(file)[:valid][0])
 
 # {
-#   :valid => [
-#     [
-#       "FileName : extract_sh",
-#       "    Desc : extract shell functions from shell script",
-#       "  Author : Zhao Cai <caizhaoff@gmail.com>"
-#     ]
+#   "Gem"      => "front_matter",
+#   "Author"   => "Zhao Cai",
+#   "Email"    => "caizhaoff@gmail.com",
+#   "Homepage" => "https://github.com/zhaocai/",
+#   "Tag"      => [
+#     "ruby",
+#     "yaml",
+#     "comment"
 #   ]
 # }
 

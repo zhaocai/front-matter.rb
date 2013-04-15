@@ -23,9 +23,9 @@ class FrontMatter
         :header => {
           :comment_marker  => comment_marker,
           :filetype => %r{.*},
-          :start    => %r{#{comment_marker} (?<start> \s* [-=]{3,} \s [-=]{3,}$) }x ,
+          :start    => %r{#{comment_marker} (?<start> \s* [-=]{3,} .* [-=]{3,}$) }x ,
           :content  => %r{#{comment_marker} (?<content> .* $)                }x ,
-          :end      => %r{#{comment_marker} (?<end> \s* [-=]{3,} \s [-=]{3,}$)   }x ,
+          :end      => %r{#{comment_marker} (?<end> \s* [-=]{3,} .* [-=]{3,}$)   }x ,
         },
         :yaml => {
           :comment_marker  => comment_marker,
