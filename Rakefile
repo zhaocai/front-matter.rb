@@ -1,6 +1,6 @@
 # -*- ruby -*-
 
-require 'rubygems'
+require 'rubygems' unless defined? Gem
 require 'hoe'
 
 Hoe.plugin :bundler

@@ -20,7 +20,16 @@ require 'front_matter/core/array'
 
 class FrontMatter
   VERSION = '1.2.1'
+
+  ##
+  # *Optional*: setting for FrontMatter
+  #
+  # - :patterns => add new patterns to extract 
+  # - :unindent => unindent leading whitespace  
+  # - :as_yaml  => results are formated for YAML.load
+  #
   attr_accessor :setting
+
   def initialize( opts={} )
     comment_marker   = %r{(?<comment> ^\s* \W{1,2} )}x
     @setting = {
@@ -49,9 +58,9 @@ class FrontMatter
   end
 
   ##
-  # *Args*
+  # Extract from string
   # - contents : String
-  # - filetype : Array of filetypes
+  # - filetype : limit patterns to Array of filetypes, default []
   # 
   # *Returns*
   # - Array of extracted front matter, comment string are removed
@@ -82,7 +91,8 @@ class FrontMatter
 
 
   ##
-  # *Args*
+  # Extract from file
+  #
   # - path : file path
   # - opts : 
   #   - :filetype  : Array of filetypes
@@ -99,7 +109,7 @@ class FrontMatter
   #   fm = FrontMatter.new(:unindent => true, :as_yaml => true)
   #   puts fm.extract_file(__FILE__, :firstline => 1, :lastline => 15)
   #
-  # *Output*
+  # The output would be:
   #   ---
   #   Desc          : extract (YAML) front matter from source code
   #   Author        : Zhao Cai <caizhaoff@gmail.com>

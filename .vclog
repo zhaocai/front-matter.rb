@@ -1,0 +1,31 @@
+# Heuristics used by VCLog itself.
+
+type :major,    2, "Major Enhancements"
+type :minor,    1, "Minor Enhancements"
+type :bug,      0, "Bug Fixes"
+type :default, -1, "Nominal Changes"
+type :doc,     -2, "Documentation Changes"
+type :test,    -2, "Test/Spec Adjustments"
+type :admin,   -3, "Administrative Changes"
+type :log,     -4, "Just a record"
+
+
+on Regexp.union(/^(?<type> \w+):/, /^\[(?<type>\w+)\]/) do |commit, md|
+  p md
+  type = md[:type].to_sym
+  commit.type    = type
+  commit.message = commit.message.sub(md[0],'').strip
+end
+
+on /updated? (README\.md|PROFILE|PACKAGE|VERSION|Manifest\.txt)/ do |commit|
+  commit.type = :admin
+end
+
+on /(bump|bumped|prepare) version/ do |commit|
+  commit.type = :admin
+end
+
+colors :grey, :blue, :cyan, :green, :yellow, :red, [:red, :bold]
+
+
+#  vim: set ft=ruby ts=2 sw=2 tw=78 fmr=[[[,]]] fdm=syntax :

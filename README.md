@@ -1,4 +1,4 @@
-# Front Matter[![Build Status](https://travis-ci.org/zhaocai/front-matter.rb.png?branch=master)](https://travis-ci.org/zhaocai/front-matter.rb)
+# Front Matter [![Build Status](https://travis-ci.org/zhaocai/front-matter.rb.png?branch=master)](https://travis-ci.org/zhaocai/front-matter.rb)
 
 * home  :: http://zhaocai.github.com/front-matter.rb/
 * rdoc  :: http://rubydoc.info/gems/front-matter/
