@@ -48,6 +48,17 @@ class FrontMatter
     @setting.merge!(opts)
   end
 
+  ##
+  # *Args*
+  # - contents : String
+  # - filetype : Array of filetypes
+  # 
+  # *Returns*
+  # - Array of extracted front matter, comment string are removed
+  #
+  # *Raises*
+  # - None from this class
+  #
   def extract(contents, filetype=[])
     unless filetype.empty?
       patterns = @setting[:patterns].select { |kind, pattern|
@@ -68,6 +79,36 @@ class FrontMatter
 
     return results
   end
+
+
+  ##
+  # *Args*
+  # - path : file path
+  # - opts : 
+  #   - :filetype  : Array of filetypes
+  #   - :firstline
+  #   - :lastline
+  # 
+  # *Returns*
+  # - Array of extracted front matter, comment string are removed
+  #
+  # *Raises*
+  # - None from this class
+  #
+  # *Example*
+  #   fm = FrontMatter.new(:unindent => true, :as_yaml => true)
+  #   puts fm.extract_file(__FILE__, :firstline => 1, :lastline => 15)
+  #
+  # *Output*
+  #   ---
+  #   Desc          : extract (YAML) front matter from source code
+  #   Author        : Zhao Cai <caizhaoff@gmail.com>
+  #   HomePage      : https://github.com/zhaocai/front_matter.rb
+  #   Date Created  : Sat 25 Aug 2012 01:36:13 AM EDT
+  #   Last Modified : Sun 14 Apr 2013 08:05:00 PM EDT
+  #   Tag           : [ ruby, YAML, comment, extract ]
+  #   Copyright     : (c) 2012 by Zhao Cai,
+  #                     Released under current GPL license.
 
   def extract_file(path, opts={})
 
