@@ -2,7 +2,10 @@ require "spec_helper"
 require "yaml"
 describe "Front_Matter" do
   before :all do
-    Dir.chdir("test/")
+
+    test_dir = "test"
+    Dir.mkdir(test_dir) unless Dir.exists?(test_dir)
+    Dir.chdir(test_dir)
   end
 
   context "Extraction" do
