@@ -74,6 +74,10 @@ ap YAML.load(front_matters[0])
 
 `gem install front-matter`
 
+## Requirement:
+
+ruby 1.9+
+
 ## History
 
 refer to [History.md]( https://raw.github.com/zhaocai/front-matter.rb/master/History.md )
