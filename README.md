@@ -74,7 +74,9 @@ ap YAML.load(front_matters[0])
 
 `gem install front-matter`
 
+## History
 
+> refer to History.md
 
 ## DEVELOPERS:
 

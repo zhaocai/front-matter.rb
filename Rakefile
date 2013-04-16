@@ -37,4 +37,8 @@ end
   end
 }
 
+desc "changelog"
+task :changelog => [] do
+  sh "vclog -f markdown -r > History.md"
+end
 # vim: syntax=ruby

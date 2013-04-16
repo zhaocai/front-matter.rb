@@ -2,7 +2,7 @@
 Gemfile
 Gemfile.lock
 Guardfile
-History.txt
+History.md
 Manifest.txt
 README.md
 Rakefile

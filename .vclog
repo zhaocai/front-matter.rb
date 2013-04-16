@@ -1,17 +1,17 @@
 # Heuristics used by VCLog itself.
 
-type :major,    2, "Major Enhancements"
-type :minor,    1, "Minor Enhancements"
-type :bug,      0, "Bug Fixes"
-type :default, -1, "Nominal Changes"
-type :doc,     -2, "Documentation Changes"
-type :test,    -2, "Test/Spec Adjustments"
-type :admin,   -3, "Administrative Changes"
-type :log,     -4, "Just a record"
+type :major,    3, "Major Enhancements"
+type :minor,    2, "Minor Enhancements"
+type :bug,      1, "Bug Fixes"
+type :fix,      1, "Bug Fixes"
+type :update,   0, "Nominal Changes"
+type :doc,     -1, "Documentation Changes"
+type :test,    -1, "Test/Spec Adjustments"
+type :admin,   -2, "Administrative Changes"
+type :log,     -3, "Just a record"
 
 
 on Regexp.union(/^(?<type> \w+):/, /^\[(?<type>\w+)\]/) do |commit, md|
-  p md
   type = md[:type].to_sym
   commit.type    = type
   commit.message = commit.message.sub(md[0],'').strip
