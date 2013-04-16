@@ -76,7 +76,7 @@ ap YAML.load(front_matters[0])
 
 ## History
 
-> refer to History.md
+refer to [History.md]( https://raw.github.com/zhaocai/front-matter.rb/master/History.md )
 
 ## DEVELOPERS:
 
