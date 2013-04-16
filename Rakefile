@@ -1,11 +1,13 @@
 # -*- ruby -*-
 
-require 'rubygems'
 require 'hoe'
 
+Hoe.plugin :bundler
 Hoe.plugin :gemspec
 Hoe.plugin :git
 Hoe.plugin :version
+Hoe.plugin :travis
+Hoe.plugin :yard
 
 Hoe.spec 'front-matter' do
 
@@ -19,10 +21,10 @@ Hoe.spec 'front-matter' do
 
   extra_dev_deps << ['rspec', '>= 2.13']
   extra_dev_deps << ['rake', '>= 10.0.0']
-  extra_dev_deps << ['hoe'] << ['hoe-gemspec'] << ['hoe-git'] << ['hoe-version']
+  extra_dev_deps << ['hoe'] << ['hoe-gemspec'] << ['hoe-git'] << ['hoe-version'] << ['hoe-yard']
   extra_dev_deps << ['awesome_print', '>= 1.1.0']
   extra_dev_deps << ['guard', '~> 1.7.0'] << ['guard-rspec'] << ['guard-bundler']
-  extra_dev_deps << ['terminal-notifier-guard'] << ['growl'] << ['rb-fsevent', '~> 0.9']
+  extra_dev_deps << ['terminal-notifier-guard'] << ['growl'] 
 
 end
 

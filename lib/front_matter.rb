@@ -14,6 +14,10 @@ require 'facets/hash'
 require 'facets/string'
 require 'front_matter/core/array'
 
+## 
+# Extracts embeded info (yaml front matters, for example ) in source
+# code comments with predefined format.
+
 class FrontMatter
   VERSION = '1.2.1'
   attr_accessor :setting
